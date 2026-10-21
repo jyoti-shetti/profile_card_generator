@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProfileCraft — Profile Card Generator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="nav">
+    <div class="logo"><img src="{{ url_for('static', filename='images/default-avatar.svg') }}" alt=""></div>
+    <div><strong>ProfileCraft</strong><span class="tagline">Your identity, beautifully presented.</span></div>
+  </header>
+
+  <section class="hero">
+    <h1>Create Your Digital Identity</h1>
+    <p>Tell your story, showcase your personality, and turn your details into a personalized profile card.</p>
+  </section>
+
+  <main class="layout">
+    <section class="panel">
+      {% if errors %}
+      <div class="alert" role="alert">
+        <strong>Please fix the following:</strong>
+        <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      </div>
+      {% endif %}
+
+      <form name="profileForm" id="profileForm" action="{{ url_for('generate_profile') }}" method="POST" novalidate>
+        <label for="name">Full name *</label>
+        <input id="name" name="name" type="text" maxlength="60" required
+               placeholder="Enter your full name." value="{{ values.name }}">
+
+        <label for="title">Professional title</label>
+        <input id="title" name="title" type="text" maxlength="80"
+               placeholder="e.g., AI/ML Student, Software Developer." value="{{ values.title }}">
+
+        <label for="bio">Biography * <span class="counter" id="counter">0 / 250</span></label>
+        <textarea id="bio" name="bio" rows="4" maxlength="250" required
+                  placeholder="Tell us a little about yourself...">{{ values.bio }}</textarea>
+
+        <label for="image_url">Profile image URL</label>
+        <input id="image_url" name="image_url" type="url"
+               placeholder="https://example.com/profile.jpg" value="{{ values.image_url }}">
+
+        <label for="github">GitHub profile URL</label>
+        <input id="github" name="github" type="url"
+               placeholder="https://github.com/username" value="{{ values.github }}">
+
+        <label for="linkedin">LinkedIn profile URL</label>
+        <input id="linkedin" name="linkedin" type="url"
+               placeholder="https://linkedin.com/in/username" value="{{ values.linkedin }}">
+
+        <div class="buttons">
+          <button type="submit" class="btn primary">Generate Profile</button>
+          <button type="button" class="btn" id="resetBtn">Reset Form</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel preview">
+      <p class="muted">Preview</p>
+      <article class="card placeholder">
+        <img class="avatar" src="{{ url_for('static', filename='images/default-avatar.svg') }}" alt="Placeholder avatar">
+        <h2>Your Name</h2>
+        <p class="role">Your professional title</p>
+        <p class="bio">Fill in the form and press “Generate Profile” to see your card here.</p>
+      </article>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

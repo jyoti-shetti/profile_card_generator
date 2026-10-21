@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ profile.name }} — ProfileCraft</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="nav">
+    <div class="logo"><img src="{{ url_for('static', filename='images/default-avatar.svg') }}" alt=""></div>
+    <div><strong>ProfileCraft</strong><span class="tagline">Your identity, beautifully presented.</span></div>
+  </header>
+
+  <main class="result">
+    <article class="card">
+      <span class="badge">Profile Created Successfully</span>
+      {# Jinja2 escapes everything below automatically. No |safe is used. #}
+      <img class="avatar" id="avatar"
+           src="{{ profile.image_url or url_for('static', filename='images/default-avatar.svg') }}"
+           data-fallback="{{ url_for('static', filename='images/default-avatar.svg') }}"
+           alt="Profile picture of {{ profile.name }}">
+      <h2>{{ profile.name }}</h2>
+      {% if profile.title %}<p class="role">{{ profile.title }}</p>{% endif %}
+      <p class="bio">{{ profile.bio }}</p>
+
+      {% if profile.github or profile.linkedin %}
+      <div class="links">
+        {% if profile.github %}<a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>{% endif %}
+        {% if profile.linkedin %}<a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>{% endif %}
+      </div>
+      {% endif %}
+    </article>
+    <a class="btn" href="{{ url_for('home') }}">Create another profile</a>
+  </main>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
